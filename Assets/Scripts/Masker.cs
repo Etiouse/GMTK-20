@@ -16,7 +16,7 @@ public class Masker : MonoBehaviour
         foreach (Transform child in transform)
         {
             masks.Add(child.gameObject);
-            totalSizes += child.GetComponent<RectTransform>().rect.width;
+            totalSizes += child.localScale.x;
         }
         StartReveal();
     }
@@ -29,9 +29,9 @@ public class Masker : MonoBehaviour
     IEnumerator Reveal(GameObject mask, int index)
     {
         Vector3 originalScale = mask.transform.localScale;
-        Vector3 destinationScale = new Vector3(0f, 1.0f, 1.0f);
+        Vector3 destinationScale = new Vector3(0f, originalScale.y, originalScale.z);
 
-        float time = mask.GetComponent<RectTransform>().rect.width / totalSizes * TotalDisplayTime;
+        float time = mask.transform.localScale.x / totalSizes * TotalDisplayTime;
 
         float currentTime = 0.0f;
 
