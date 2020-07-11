@@ -14,22 +14,114 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TMP_Text gameOverMessage = null;
     [SerializeField] private GameObject startOptionsWindow = null;
 
+    [Header("Popups")]
+    [SerializeField] private GameObject exitConfirmationWindow = null;
+    [SerializeField] private GameObject saveConfirmationWindow = null;
+    [SerializeField] private GameObject progressWindow = null;
+    [SerializeField] private GameObject progressConfirmationWindow = null;
+
     [Header("Parameters")]
     [SerializeField] private Color minimizedColor = Color.white;
     [SerializeField] private Color maximizedColor = Color.white;
     [SerializeField] private float minimizeDelay = 1f;
+    
+    private enum MinimizeState { IDLE, OPENING, CLOSING };
+    private MinimizeState minState;
 
-    private enum minimizeState { IDLE, OPENING, CLOSING };
-    private minimizeState minState;
+    private enum SaveState { FIRST_ATTEMPT, SECOND_ATTEMPT, THIRD_ATTEMPT, END };
+    private SaveState saveState;
 
     private float stateChangedStart;
     private RectTransform wordRect;
     private Vector2 wordDim;
     private bool minimized;
 
+    public void Save()
+    {
+        saveConfirmationWindow.transform.parent.gameObject.SetActive(true);
+    }
+
+    public void ValidateSave()
+    {
+        switch (saveState)
+        {
+            case SaveState.FIRST_ATTEMPT:
+                // First attempt just shift the window upward
+                saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
+                saveState = SaveState.SECOND_ATTEMPT;
+                break;
+            case SaveState.SECOND_ATTEMPT:
+                // Second attempt swaps buttons and shift them downward
+                saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
+                saveState = SaveState.THIRD_ATTEMPT;
+                break;
+            case SaveState.THIRD_ATTEMPT:
+                // Third attempt shift yes button upward
+                saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
+                saveState = SaveState.END;
+                break;
+            case SaveState.END:
+                // Last attempt open progress window
+                ExitSave();
+                progressWindow.transform.parent.gameObject.SetActive(true);
+                progressWindow.GetComponent<ProgressWindow>().StartProgress();
+                break;
+        }
+    }
+
+    public void ExitProgress()
+    {
+        progressWindow.transform.parent.gameObject.SetActive(false);
+        progressWindow.GetComponent<ProgressWindow>().ResetProgress();
+    }
+
+    public void ExitSave()
+    {
+        if (saveState >= SaveState.THIRD_ATTEMPT)
+        {
+            saveConfirmationWindow.GetComponent<SaveWindow>().SwapBack();
+        }
+
+        saveConfirmationWindow.transform.parent.gameObject.SetActive(false);
+        saveState = SaveState.FIRST_ATTEMPT;
+    }
+
     public void Exit()
     {
-        GameOver("You closed your document without saving it");
+        exitConfirmationWindow.transform.parent.gameObject.SetActive(true);
+    }
+
+    public void ExitExit()
+    {
+        exitConfirmationWindow.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void ExitAndSave()
+    {
+        ExitExit();
+        Save();
+    }
+
+    public void ExitWithoutSaving()
+    {
+        ExitExit();
+        GameOver("You closed Wrod without saving your document");
+    }
+
+    public void EndSavingProcess()
+    {
+        progressWindow.transform.parent.gameObject.SetActive(false);
+        progressConfirmationWindow.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void Shutdown()
+    {
+        GameOver("You stopped your computer without saving your document");
+    }
+
+    public void InitCorruption()
+    {
+        timeSimulator.ChangeState(TimeSimulator.State.CORRUPTED);
     }
 
     public void Retry()
@@ -54,7 +146,7 @@ public class UIHandler : MonoBehaviour
         minimized = true;
         minimizeButton.GetComponent<Image>().color = minimized ? minimizedColor : maximizedColor;
 
-        minState = minimizeState.CLOSING;
+        minState = MinimizeState.CLOSING;
         stateChangedStart = Time.time;
     }
 
@@ -65,18 +157,29 @@ public class UIHandler : MonoBehaviour
 
         if (minimized)
         {
-            minState = minimizeState.CLOSING;
+            minState = MinimizeState.CLOSING;
         }
         else
         {
-            minState = minimizeState.OPENING;
+            minState = MinimizeState.OPENING;
         }
         stateChangedStart = Time.time;
     }
 
+    private void OnEnable()
+    {
+        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction += OpenProgressValidationBait;
+    }
+
+    private void OnDisable()
+    {
+        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction -= OpenProgressValidationBait;
+    }
+
     private void Start()
     {
-        minState = minimizeState.IDLE;
+        minState = MinimizeState.IDLE;
+        saveState = SaveState.FIRST_ATTEMPT;
         stateChangedStart = 0f;
 
         wordRect = wordObject.GetComponent<RectTransform>();
@@ -88,6 +191,16 @@ public class UIHandler : MonoBehaviour
 
     private void Update()
     {
+        // Shortcuts
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            // Shortcuts with control key
+            if (Input.GetKey(KeyCode.S))
+            {
+                Save();
+            }
+        }
+
         // Hide Start menu if clicked outside of the start button
         if (Input.GetMouseButton(0) && Input.mousePosition.x > 120 && Input.mousePosition.y > 30)
         {
@@ -95,7 +208,7 @@ public class UIHandler : MonoBehaviour
         }
 
         // Animate minimization
-        if (minState != minimizeState.IDLE)
+        if (minState != MinimizeState.IDLE)
         {
             float dTime = Time.time - stateChangedStart;
             float ratio = 1f;
@@ -103,23 +216,30 @@ public class UIHandler : MonoBehaviour
             if (dTime >= minimizeDelay)
             {
                 // End ratio
-                ratio = minState == minimizeState.CLOSING ? 1 - ratio : ratio;
+                ratio = minState == MinimizeState.CLOSING ? 1 - ratio : ratio;
 
                 // Stop animation
-                wordObject.GetComponent<CanvasGroup>().interactable = minState == minimizeState.OPENING;
-                minState = minimizeState.IDLE;
+                wordObject.GetComponent<CanvasGroup>().interactable = minState == MinimizeState.OPENING;
+                minState = MinimizeState.IDLE;
             }
             else
             {
                 // Compute ratio
                 ratio = dTime / minimizeDelay;
-                ratio = minState == minimizeState.CLOSING ? 1 - ratio : ratio;
+                ratio = minState == MinimizeState.CLOSING ? 1 - ratio : ratio;
             }
 
             wordRect.offsetMin = new Vector2(130 * (1 - ratio), wordRect.offsetMin.y);
             wordRect.offsetMax = new Vector2((350 - wordDim.x) * (1 - ratio), -wordDim.y * (1 - ratio));
             wordObject.GetComponent<CanvasGroup>().alpha = ratio;
         }
+    }
+
+    private void OpenProgressValidationBait()
+    {
+        progressConfirmationWindow.transform.parent.gameObject.SetActive(true);
+
+        timeSimulator.ChangeState(TimeSimulator.State.TROUBLED);
     }
 
     private void GameOver(string message)
@@ -132,6 +252,6 @@ public class UIHandler : MonoBehaviour
     {
         gameOverWindow.SetActive(false);
         minimized = false;
-        minState = minimizeState.IDLE;
+        minState = MinimizeState.IDLE;
     }
 }
