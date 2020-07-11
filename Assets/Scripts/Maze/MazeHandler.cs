@@ -10,14 +10,37 @@ public class MazeHandler : MonoBehaviour
     [SerializeField]
     private GameObject spawnParent;
 
-    public static int CurrentSpawnIndex { get; set; }
+    [SerializeField]
+    private GameObject firstPopupProtectionWall;
+
+    private static int currentSpawnIndex;
+
+    public static int CurrentSpawnIndex
+    {
+        get
+        {
+            return currentSpawnIndex;
+        }
+
+        set
+        {
+            if (value >= 1)
+            {
+                activateFirstProtectionWall = true;
+            }
+
+            currentSpawnIndex = value;
+        }
+    }
+
+    private static bool activateFirstProtectionWall = false;
 
     private static List<GameObject> spawns;
 
     // Start is called before the first frame update
     void Start()
     {
-        CurrentSpawnIndex = 0;
+        currentSpawnIndex = 0;
 
         spawns = new List<GameObject>();
         for (int i = 0; i < spawnParent.transform.childCount; i++)
@@ -34,11 +57,13 @@ public class MazeHandler : MonoBehaviour
         {
             ball.SetBallPosition(Vector3.zero);
         }
+
+        firstPopupProtectionWall.SetActive(activateFirstProtectionWall);
     }
 
     public static GameObject GetCurrentSpawn()
     {
-        return spawns[CurrentSpawnIndex];
+        return spawns[currentSpawnIndex];
     }
 
     public static int GetMaxSpawnNumber()
@@ -53,6 +78,6 @@ public class MazeHandler : MonoBehaviour
             item.GetComponent<SpriteRenderer>().enabled = false;
         }
 
-        spawns[CurrentSpawnIndex + 1].GetComponent<SpriteRenderer>().enabled = true;
+        spawns[currentSpawnIndex + 1].GetComponent<SpriteRenderer>().enabled = true;
     }
 }
