@@ -9,6 +9,7 @@ to make derivative works
 to make commercial use of the work
 */
 
+using System.Collections;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -105,10 +106,22 @@ public class GlitchEffect : MonoBehaviour
 		Graphics.Blit(source, destination, _material);
 	}
 
-    public void SetGlitch(float intensity)
-    {
-        this.intensity = intensity;
-        flipIntensity = intensity;
-        colorIntensity = intensity;
-    }
+	public void SetGlitch(float intensity)
+	{
+		this.intensity = intensity;
+		flipIntensity = intensity;
+		colorIntensity = intensity;
+	}
+
+	public void SetGlitch(float intensity, float seconds)
+	{
+		StartCoroutine(StartGlitch(intensity, seconds));
+	}
+
+	private IEnumerator StartGlitch(float intensity, float seconds)
+	{
+		instance.SetGlitch(intensity);
+		yield return new WaitForSeconds(seconds);
+		instance.SetGlitch(0);
+	}
 }

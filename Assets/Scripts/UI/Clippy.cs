@@ -52,6 +52,19 @@ public class Clippy : MonoBehaviour
         rejectButton.gameObject.SetActive(showButtons);
 
         message.color = state == State.EVIL ? Color.red : Color.black;
+
+        int voiceLength = 0;
+
+        if (content.Length > 80)
+        {
+            voiceLength = 2;
+        }
+        else if (content.Length > 50)
+        {
+            voiceLength = 1;
+        }
+
+        AudioManager.instance.PlayClippyVoice(state == State.EVIL, voiceLength);
     }
 
     public void ChangePos(Vector2 newPos)

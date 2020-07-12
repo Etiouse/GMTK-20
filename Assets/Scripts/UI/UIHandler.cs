@@ -64,16 +64,25 @@ public class UIHandler : MonoBehaviour
                 // First attempt just shift the window upward
                 saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
                 saveState = SaveState.SECOND_ATTEMPT;
+
+                //GlitchEffect.instance.SetGlitch(1, 1);
+                //AudioManager.instance.PlayGlitch();
                 break;
             case SaveState.SECOND_ATTEMPT:
                 // Second attempt swaps buttons and shift them downward
                 saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
                 saveState = SaveState.THIRD_ATTEMPT;
+
+                //GlitchEffect.instance.SetGlitch(1, 1);
+                //AudioManager.instance.PlayGlitch();
                 break;
             case SaveState.THIRD_ATTEMPT:
                 // Third attempt shift yes button upward
                 saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
                 saveState = SaveState.END;
+
+                //GlitchEffect.instance.SetGlitch(1, 1);
+                //AudioManager.instance.PlayGlitch();
                 break;
             case SaveState.END:
                 // Last attempt open progress window
@@ -244,6 +253,8 @@ public class UIHandler : MonoBehaviour
         minimized = false;
 
         startOptionsWindow.SetActive(false);
+
+        AudioManager.instance.PlayStartSound();
     }
 
     private void Update()

@@ -22,6 +22,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlayClickSound();
+        }
+    }
+
     public void PlaySFX(AudioClip effect, float volume = 1f, float pitch = 1f)
     {
         AudioSource source = CreateNewSource(string.Format("SFX [{0}]", effect.name));
@@ -56,16 +64,23 @@ public class AudioManager : MonoBehaviour
         PlaySFX(clip);
     }
 
-    public void PlayAmbiance(AudioClip clip, float volume = 1f, float pitch = 1f)
+    public void PlayProgressBarBreak()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/progressbar");
+        PlaySFX(clip);
+    }
+
+    public void PlayAmbiance(AudioClip clip, float volume = 1f)
     {
         if (ambiance == null)
         {
             ambiance = CreateNewSource(string.Format("AMBIANCE [{0}]", clip.name));
-            MakeVolatileChild(ambiance.transform);
+            DontDestroyOnLoad(ambiance);
         }
         ambiance.clip = clip;
         ambiance.Play();
         ambiance.loop = true;
+        ambiance.volume = volume;
     }
 
     public void StopAmbiance()
@@ -83,13 +98,13 @@ public class AudioManager : MonoBehaviour
     
     public void PlayMazeMusic()
     {
-        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"));
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"), 0.5f);
     }
 
     public void PlayClickSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("Sounds/mouse-click/click" + Random.Range(1, 3));
-        PlaySFX(clip);
+        PlaySFX(clip, 0.5f);
     }
 
     /// <summary>
@@ -115,7 +130,15 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioClip clip = Resources.Load<AudioClip>("Sounds/clippy/" + evil + "_" + length);
-        PlaySFX(clip);
+
+        if (isEvil)
+        {
+            PlaySFX(clip);
+        }
+        else
+        {
+            PlaySFX(clip, 0.6f);
+        }
     }
 
     public void PlayPickupLetter(bool goodLetter)

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ProgressWindow : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class ProgressWindow : MonoBehaviour
     {
         accelerateAccepted = true;
         accelerateAcceptedTime = Time.time;
+        GlitchEffect.instance.SetGlitch(1);
     }
 
     public void StartProgress()
@@ -71,7 +73,7 @@ public class ProgressWindow : MonoBehaviour
             float ratio = timePassed / savingDuration;
             int left = (int)(savingDuration - timePassed);
 
-            if (timePassed > 10 && firstClippy)
+            if (timePassed > 0 && firstClippy)
             {
                 firstClippy = false;
                 Clippy.Instance.Show(0);
@@ -126,7 +128,10 @@ public class ProgressWindow : MonoBehaviour
                 Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("What just happened?! I didn't mean to do that... I think you just have to follow the path and click on the confirm button to complete the save.", false);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
-                Clippy.Instance.ChangePos(new Vector3(200, -260, 0));
+                Clippy.Instance.ChangePos(new Vector3(-300, 150, 0));
+
+                AudioManager.instance.PlayProgressBarBreak();
+                AudioManager.instance.PlayMazeMusic();
             }
         }
     }

@@ -16,6 +16,7 @@ public class BallMazeManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cursorLocked = true;
         isBallOutOfPath = false;
+        GlitchEffect.instance.SetGlitch(1, 1);
     }
 
     void Update()
@@ -24,6 +25,8 @@ public class BallMazeManager : MonoBehaviour
         {
             isBallOutOfPath = false;
             SetBallPosition(MazeHandler.GetCurrentSpawn().transform.position);
+
+            AudioManager.instance.PlayCollisionSound();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
