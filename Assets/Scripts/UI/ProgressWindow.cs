@@ -72,7 +72,7 @@ public class ProgressWindow : MonoBehaviour
             float ratio = timePassed / savingDuration;
             int left = (int)(savingDuration - timePassed);
 
-            if (timePassed > 0 && firstClippy)
+            if (timePassed > 10 && firstClippy)
             {
                 firstClippy = false;
                 Clippy.Instance.Show(0);
