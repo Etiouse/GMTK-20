@@ -8,6 +8,7 @@ TagManager:
   - Palette
   - Path
   - Spawn
+  - WallInversor
   layers:
   - Default
   - TransparentFX
