@@ -11,9 +11,17 @@ public class MazeHandler : MonoBehaviour
     private GameObject spawnParent;
 
     [SerializeField]
+    private GameObject obstaclesParent;
+
+    [SerializeField]
     private GameObject firstPopupProtectionWall;
 
     private static int currentSpawnIndex;
+
+    private const int ACTIVATE_FIRST_PROTECTION_WALL_SPAWN_INDEX = 1;
+    private const int ACTIVATE_OBSTACLES_SPAWN_INDEX = 3;
+
+    private List<GameObject> obstacles;
 
     public static int CurrentSpawnIndex
     {
@@ -24,7 +32,7 @@ public class MazeHandler : MonoBehaviour
 
         set
         {
-            if (value >= 1)
+            if (value >= ACTIVATE_FIRST_PROTECTION_WALL_SPAWN_INDEX)
             {
                 activateFirstProtectionWall = true;
             }
@@ -48,6 +56,16 @@ public class MazeHandler : MonoBehaviour
             GameObject spawn = spawnParent.transform.GetChild(i).gameObject;
             spawns.Add(spawn);
         }
+
+        obstacles = new List<GameObject>();
+        for (int i = 0; i < obstaclesParent.transform.childCount; i++)
+        {
+            GameObject obstacle = obstaclesParent.transform.GetChild(i).gameObject;
+            obstacles.Add(obstacle);
+            obstacle.SetActive(false);
+        }
+
+        HighlightNextSpawn();
     }
 
     // Update is called once per frame
@@ -56,6 +74,14 @@ public class MazeHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             ball.SetBallPosition(Vector3.zero);
+        }
+
+        if (currentSpawnIndex >= ACTIVATE_OBSTACLES_SPAWN_INDEX)
+        {
+            foreach (GameObject item in obstacles)
+            {
+                item.SetActive(true);
+            }
         }
 
         firstPopupProtectionWall.SetActive(activateFirstProtectionWall);

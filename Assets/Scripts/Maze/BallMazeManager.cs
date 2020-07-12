@@ -18,7 +18,6 @@ public class BallMazeManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cursorLocked = true;
         isBallOutOfPath = false;
-        MazeHandler.HighlightNextSpawn();
     }
 
     void Update()

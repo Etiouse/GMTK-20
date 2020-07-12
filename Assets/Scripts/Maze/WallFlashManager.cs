@@ -10,11 +10,15 @@ public class WallFlashManager : MonoBehaviour
     [SerializeField]
     private float safeDuration = 2;
 
+    [SerializeField]
+    private float startingTime = 0;
+
     private float elapsedTime = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        elapsedTime = startingTime;
         GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
     }
 
