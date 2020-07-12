@@ -5,9 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Palette
   - Path
   - Spawn
   - WallInversor
+  - ButtonAdminConfirm
+  - ButtonProgressDone
   layers:
   - Default
   - TransparentFX

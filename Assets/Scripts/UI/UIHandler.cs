@@ -224,12 +224,12 @@ public class UIHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction += OpenProgressValidationBait;
+        ProgressWindow.OnProgressFinishedAction += OpenProgressValidationBait;
     }
 
     private void OnDisable()
     {
-        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction -= OpenProgressValidationBait;
+        ProgressWindow.OnProgressFinishedAction -= OpenProgressValidationBait;
     }
 
     private void Start()

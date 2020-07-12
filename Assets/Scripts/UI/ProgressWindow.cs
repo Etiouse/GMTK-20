@@ -13,7 +13,7 @@ public class ProgressWindow : MonoBehaviour
     [SerializeField] private float savingDuration = 90f;
 
     public delegate void ProgressFinishedAction();
-    public event ProgressFinishedAction OnProgressFinishedAction;
+    public static event ProgressFinishedAction OnProgressFinishedAction;
 
     private float timeStarted;
     private bool on;
@@ -86,7 +86,7 @@ public class ProgressWindow : MonoBehaviour
                 Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("Are you sure you don’t want my help? I think it will take ages otherwise.", true);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
-                Clippy.Instance.ChangePos(new Vector3(200, -180, 0));
+                Clippy.Instance.ChangePos(new Vector3(-250, 100, 0));
             }
 
             if (timePassed > 40 && thirdClippy && !accelerateAccepted)
@@ -124,9 +124,9 @@ public class ProgressWindow : MonoBehaviour
                 exitButton.interactable = false;
 
                 Clippy.Instance.Show(0);
-                Clippy.Instance.ChangeText("Ok, I’ve taken back the control of the PC... What just happened? I think you just have to follow the path and click on the confirm button to complete the save.", false);
+                Clippy.Instance.ChangeText("What just happened?! I didn't mean to do that... I think you just have to follow the path and click on the confirm button to complete the save.", false);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
-                Clippy.Instance.ChangePos(new Vector3(200, -230, 0));
+                Clippy.Instance.ChangePos(new Vector3(200, -260, 0));
             }
         }
     }
