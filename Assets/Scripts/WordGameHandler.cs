@@ -33,6 +33,7 @@ public class WordGameHandler : MonoBehaviour
         }
         currentWord = Words[0];
         WordList.transform.GetChild(currentIndex).Find("Icon_current").GetComponent<CanvasGroup>().alpha = 1;
+        AudioManager.instance.PlayAmbiance(Resources.Load<AudioClip>("Ambiance/letters-music"));
     }
 
    
