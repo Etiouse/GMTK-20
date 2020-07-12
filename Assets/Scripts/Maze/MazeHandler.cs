@@ -221,5 +221,7 @@ public class MazeHandler : MonoBehaviour
         wrapper.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         notActiveUI.GetComponent<UIHandler>().EndSavingProcess();
+
+        AudioManager.instance.PlayIntroAmbiance();
     }
 }

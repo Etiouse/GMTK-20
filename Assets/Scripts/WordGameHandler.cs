@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class WordGameHandler : MonoBehaviour
 {
+    public delegate void WinWordGameEvent();
+    public static event WinWordGameEvent OnWinWordGameEvent;
+
     public float delayBetweenLetters = 0.3f;
     public Transform MinSpawn;
     public Transform MaxSpawn;
@@ -14,6 +17,8 @@ public class WordGameHandler : MonoBehaviour
     public TextMeshProUGUI CurrentText;
     public GameObject WordList;
     public GameObject WordPrefab;
+
+    public GameObject UIHandlerObject;
 
     private string currentText;
     private string currentWord;
@@ -86,10 +91,9 @@ public class WordGameHandler : MonoBehaviour
         }
         else
         {
-            print("WIN");
+            UIHandlerObject.SetActive(true);
+            OnWinWordGameEvent();
         }
-
-
     }
 
     public string GetLetters()

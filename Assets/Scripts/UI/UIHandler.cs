@@ -28,7 +28,12 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private Color minimizedColor = Color.white;
     [SerializeField] private Color maximizedColor = Color.white;
     [SerializeField] private float minimizeDelay = 1f;
-    
+
+    [Header("Others")]
+    [SerializeField] private GameObject wordGame = null;
+    [SerializeField] private GameObject wordGamePanel = null;
+    [SerializeField] private Camera camera = null;
+
     private enum MinimizeState { IDLE, OPENING, CLOSING };
     private MinimizeState minState;
 
@@ -162,7 +167,7 @@ public class UIHandler : MonoBehaviour
         Clippy.Instance.Show(15);
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
         Clippy.Instance.ChangePos(new Vector3(200, -220, 0));
-        Clippy.Instance.ChangeText("Did you really think you did it ? Let's see if you appreciate all your work getting erased under your nose", false);
+        Clippy.Instance.ChangeText("Did you really think you did it ? Let's see if you appreciate all your work getting erased under your eyes", false);
     }
 
     private void StartGame()
@@ -177,7 +182,17 @@ public class UIHandler : MonoBehaviour
     public void RunGame()
     {
         Clippy.Instance.ShowDefense(false);
-        Clippy.Instance.Hide(); ;
+        Clippy.Instance.Hide();
+
+        wordGame.SetActive(true);
+        wordGamePanel.SetActive(true);
+
+        AudioManager.instance.PlayWordGameAmbiance();
+
+        print(camera.backgroundColor);
+        camera.backgroundColor = Color.black;
+        print(camera.backgroundColor);
+        gameObject.SetActive(false);
     }
 
     public void Shutdown()
@@ -235,11 +250,13 @@ public class UIHandler : MonoBehaviour
     private void OnEnable()
     {
         ProgressWindow.OnProgressFinishedAction += OpenProgressValidationBait;
+        WordGameHandler.OnWinWordGameEvent += WinWordGame;
     }
 
     private void OnDisable()
     {
         ProgressWindow.OnProgressFinishedAction -= OpenProgressValidationBait;
+        WordGameHandler.OnWinWordGameEvent -= WinWordGame;
     }
 
     private void Start()
@@ -255,6 +272,8 @@ public class UIHandler : MonoBehaviour
         startOptionsWindow.SetActive(false);
 
         AudioManager.instance.PlayStartSound();
+
+        RunGame();
     }
 
     private void Update()
@@ -348,5 +367,11 @@ public class UIHandler : MonoBehaviour
     private void ResetGame()
     {
         SceneManager.LoadScene("MainScene");
+    }
+
+    private void WinWordGame()
+    {
+        wordGame.SetActive(false);
+        wordGamePanel.SetActive(false);
     }
 }

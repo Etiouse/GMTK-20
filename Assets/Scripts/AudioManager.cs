@@ -137,7 +137,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            PlaySFX(clip, 0.6f);
+            PlaySFX(clip, 0.4f);
         }
     }
 
