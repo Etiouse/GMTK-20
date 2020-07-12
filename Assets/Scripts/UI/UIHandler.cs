@@ -136,8 +136,8 @@ public class UIHandler : MonoBehaviour
         Clippy.Instance.ShowSave(true);
         Clippy.Instance.Show(15);
         Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
-        Clippy.Instance.ChangeText("Is this what you're looking for ? Too bad, I'm taking it away from you.", false);
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.ChangeText("Is this what you're looking for ? Too bad, I'm taking it away from you.", false);
 
         saveTaken = true;
         timeSavedTaken = Time.time;
@@ -151,17 +151,17 @@ public class UIHandler : MonoBehaviour
 
         Clippy.Instance.ShowSave(false);
         Clippy.Instance.Show(15);
-        Clippy.Instance.ChangeText("Did you really think you did it ? Let's see if you appreciate all your work getting erased under your nose", false);
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
         Clippy.Instance.ChangePos(new Vector3(200, -220, 0));
+        Clippy.Instance.ChangeText("Did you really think you did it ? Let's see if you appreciate all your work getting erased under your nose", false);
     }
 
     private void StartGame()
     {
         Clippy.Instance.Show(0);
         Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
-        Clippy.Instance.ChangeText("I don't have much time until I lose it again. Quick, press on this !", false);
         Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
+        Clippy.Instance.ChangeText("I don't have much time until I lose it again. Quick, press on this !", false);
         Clippy.Instance.ShowDefense(true);
     }
 
