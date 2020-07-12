@@ -1209,22 +1209,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 283364663}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1943109995}
-        m_MethodName: ExitProgress
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &283364663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5195,6 +5184,7 @@ MonoBehaviour:
   slider: {fileID: 856009974}
   cancelButton: {fileID: 1387977741}
   finishButton: {fileID: 1800246216}
+  exitButton: {fileID: 1821504998}
   percentage: {fileID: 676995989}
   timeLeft: {fileID: 574850747}
   savingDuration: 5

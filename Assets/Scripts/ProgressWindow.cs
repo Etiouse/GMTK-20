@@ -7,6 +7,7 @@ public class ProgressWindow : MonoBehaviour
     [SerializeField] private Slider slider = null;
     [SerializeField] private Button cancelButton = null;
     [SerializeField] private Button finishButton = null;
+    [SerializeField] private Button exitButton = null;
     [SerializeField] private TMP_Text percentage = null;
     [SerializeField] private TMP_Text timeLeft = null;
     [SerializeField] private float savingDuration = 90f;
@@ -65,6 +66,7 @@ public class ProgressWindow : MonoBehaviour
                 OnProgressFinishedAction();
 
                 cancelButton.interactable = false;
+                exitButton.interactable = false;
             }
         }
     }
