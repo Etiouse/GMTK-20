@@ -65,7 +65,7 @@ public class ProgressWindow : MonoBehaviour
             float timePassed = Time.time - timeStarted;
             if (accelerateAccepted)
             {
-                timePassed = (accelerateAcceptedTime - timeStarted) + (Time.time - accelerateAcceptedTime) * 50;
+                timePassed = (accelerateAcceptedTime - timeStarted) + (Time.time - accelerateAcceptedTime) * (8 * Mathf.Pow(Time.time - accelerateAcceptedTime, 1.5f));
             } 
 
             float ratio = timePassed / savingDuration;
