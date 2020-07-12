@@ -54,7 +54,14 @@ public class WordGameHandler : MonoBehaviour
         
         currentText += letter;
         if (!currentWord.ToLower().StartsWith(currentText.ToLower()))
+        {
             currentText = "";
+            AudioManager.instance.PlayPickupLetter(false);
+        }
+        else
+        {
+            AudioManager.instance.PlayPickupLetter(true);
+        }
         CurrentText.text = currentText;
 
         if (currentText.ToLower() == currentWord.ToLower())
@@ -88,5 +95,23 @@ public class WordGameHandler : MonoBehaviour
     public string GetLetters()
     {
         return currentWord;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GlitchEffect.instance.SetGlitch(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            GlitchEffect.instance.SetGlitch(0.5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            GlitchEffect.instance.SetGlitch(1f);
+        }
     }
 }
