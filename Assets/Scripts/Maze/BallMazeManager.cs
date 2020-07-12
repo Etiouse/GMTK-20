@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class BallMazeManager : MonoBehaviour
 {
-    public delegate void EndMazeEvent();
-    public static event EndMazeEvent OnEndMazeEvent;
-
     [SerializeField]
     private float mouseSpeed = 5f;
 
     private bool cursorLocked;
 
     private bool isBallOutOfPath;
-
-    private bool hasApplicationFocus;
 
     void Start()
     {
@@ -94,16 +89,28 @@ public class BallMazeManager : MonoBehaviour
             {
                 MazeHandler.CurrentSpawnIndex = newSpawnIndex;
 
-                if (newSpawnIndex >= MazeHandler.GetMaxSpawnNumber() - 1)
-                {
-                    OnEndMazeEvent();
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                else
+                if (newSpawnIndex < MazeHandler.GetMaxSpawnNumber() - 1)
                 {
                     MazeHandler.HighlightNextSpawn();
                 }
             }
+        }
+        else if (collision.tag == "ButtonAdminConfirm")
+        {
+            MazeHandler.CurrentButton = MazeHandler.Button.ADMIN_CONFIRM;
+        }
+        else if (collision.tag == "ButtonProgressDone")
+        {
+            MazeHandler.CurrentButton = MazeHandler.Button.PROGRESS_DONE;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "ButtonAdminConfirm" ||
+            collision.tag == "ButtonProgressDone")
+        {
+            MazeHandler.CurrentButton = MazeHandler.Button.NONE;
         }
     }
 }

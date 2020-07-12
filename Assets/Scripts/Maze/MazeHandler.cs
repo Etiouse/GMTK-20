@@ -4,23 +4,43 @@ using UnityEngine;
 
 public class MazeHandler : MonoBehaviour
 {
-    [SerializeField]
-    private BallMazeManager ball;
+    public enum Button
+    {
+        NONE,
+        ADMIN_CONFIRM,
+        PROGRESS_DONE
+    }
 
-    [SerializeField]
-    private GameObject spawnParent;
+    public delegate void ButtonAdminConfirmDownEvent();
+    public static event ButtonAdminConfirmDownEvent OnButtonAdminConfirmDownEvent;
 
-    [SerializeField]
-    private GameObject obstaclesParent;
+    public delegate void ButtonProgressDoneDownEvent();
+    public static event ButtonProgressDoneDownEvent OnButtonProgressDoneDownEvent;
 
-    [SerializeField]
-    private GameObject firstPopupProtectionWall;
+    [SerializeField] private BallMazeManager ball;
 
-    [SerializeField]
-    private GameObject wrapper;
+    [SerializeField] private GameObject notActiveUI;
 
-    [SerializeField]
-    private GameObject notActiveUI;
+    [SerializeField] private GameObject spawnParent;
+    [SerializeField] private GameObject obstaclesParent;
+    [SerializeField] private GameObject wrapper;
+
+    [SerializeField] private GameObject firstPopupProtectionWall;
+    [SerializeField] private GameObject wallProtectionPart2;
+    [SerializeField] private GameObject wallProtectionPartObstacles;
+    [SerializeField] private GameObject wallEnd;
+    [SerializeField] private GameObject wallEndFinishProtection1;
+    [SerializeField] private GameObject wallEndFinishProtection2;
+
+    [SerializeField] private GameObject buttonAdminConfirm;
+    [SerializeField] private GameObject buttonProgressDone;
+
+    [SerializeField] private GameObject adminConfirmPart1;
+    [SerializeField] private GameObject adminConfirmPart2;
+    [SerializeField] private GameObject progressDonePart1;
+    [SerializeField] private GameObject progressDonePart2;
+
+    [SerializeField] private Masker masksPart2;
 
     private static int currentSpawnIndex;
 
@@ -49,6 +69,8 @@ public class MazeHandler : MonoBehaviour
         }
     }
 
+    public static Button CurrentButton { get; set; }
+
     private static bool activateFirstProtectionWall = false;
 
     private static List<GameObject> spawns;
@@ -56,13 +78,15 @@ public class MazeHandler : MonoBehaviour
     private void OnEnable()
     {
         ProgressWindow.OnProgressFinishedAction += StartMaze;
-        BallMazeManager.OnEndMazeEvent += EndMaze;
+        OnButtonAdminConfirmDownEvent += ButtonAdminConfirm;
+        OnButtonProgressDoneDownEvent += EndMaze;
     }
 
     private void OnDisable()
     {
         ProgressWindow.OnProgressFinishedAction -= StartMaze;
-        BallMazeManager.OnEndMazeEvent -= EndMaze;
+        OnButtonAdminConfirmDownEvent -= ButtonAdminConfirm;
+        OnButtonProgressDoneDownEvent -= EndMaze;
     }
 
     // Start is called before the first frame update
@@ -84,12 +108,36 @@ public class MazeHandler : MonoBehaviour
             ball.SetBallPosition(Vector3.zero);
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            switch (CurrentButton)
+            {
+                case Button.ADMIN_CONFIRM:
+                    OnButtonAdminConfirmDownEvent();
+                    break;
+                case Button.PROGRESS_DONE:
+                    OnButtonProgressDoneDownEvent();
+                    break;
+                case Button.NONE:
+                    break;
+            }
+        }
+
         if (currentSpawnIndex >= ACTIVATE_OBSTACLES_SPAWN_INDEX)
         {
             foreach (GameObject item in obstacles)
             {
                 item.SetActive(true);
             }
+
+            wallProtectionPartObstacles.SetActive(false);
+            wallEnd.SetActive(false);
+
+            wallEndFinishProtection1.SetActive(true);
+            wallEndFinishProtection2.SetActive(true);
+
+            progressDonePart1.SetActive(false);
+            progressDonePart2.SetActive(true);
         }
 
         firstPopupProtectionWall.SetActive(activateFirstProtectionWall);
@@ -113,6 +161,17 @@ public class MazeHandler : MonoBehaviour
         }
 
         spawns[currentSpawnIndex + 1].GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    private void ButtonAdminConfirm()
+    {
+        wallProtectionPart2.SetActive(false);
+        buttonAdminConfirm.SetActive(false);
+
+        masksPart2.enabled = true;
+
+        adminConfirmPart1.SetActive(false);
+        adminConfirmPart2.SetActive(true);
     }
 
     private void StartMaze()
@@ -145,5 +204,6 @@ public class MazeHandler : MonoBehaviour
     {
         notActiveUI.SetActive(true);
         wrapper.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
     }
 }
