@@ -59,7 +59,8 @@ public class UIHandler : MonoBehaviour
     private float timeErased;
     private bool fileErased;
 
-    private bool gameFinished = false;
+    private bool firstGameFinished;
+    private bool gameFinished;
 
     public void Save()
     {
@@ -139,6 +140,10 @@ public class UIHandler : MonoBehaviour
         {
             saveConfirmationWindow.GetComponent<SaveWindow>().SwapBack();
         }
+        else if (saveState == SaveState.SECOND_ATTEMPT)
+        {
+            saveConfirmationWindow.GetComponent<SaveWindow>().ShiftBack();
+        }
 
         saveConfirmationWindow.transform.parent.gameObject.SetActive(false);
         saveState = SaveState.FIRST_ATTEMPT;
@@ -175,14 +180,22 @@ public class UIHandler : MonoBehaviour
         optionsBar.ShowHomeBar();
         saveButton.gameObject.SetActive(false);
 
-        Clippy.Instance.ShowSave(true);
-        Clippy.Instance.Show(15);
-        Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
-        Clippy.Instance.ChangeState(Clippy.State.EVIL);
-        Clippy.Instance.ChangeText("Is this what you're looking for ? Too bad, I'm taking it away from you.", false);
+        firstGameFinished = true;
+    }
 
-        saveTaken = true;
-        timeSavedTaken = Time.time;
+    private void StartStolenEvent()
+    {
+        if (firstGameFinished)
+        {
+            Clippy.Instance.ShowSave(true);
+            Clippy.Instance.Show(15);
+            Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
+            Clippy.Instance.ChangeState(Clippy.State.EVIL);
+            Clippy.Instance.ChangeText("Is this what you're looking for ? Too bad, I'm taking it away from you.", false);
+
+            saveTaken = true;
+            timeSavedTaken = Time.time;
+        }
     }
 
     private void StartErasing()

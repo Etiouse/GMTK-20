@@ -26,6 +26,12 @@ public class SaveWindow : MonoBehaviour
         Clippy.Instance.Show(10);
     }
 
+    public void ShiftBack()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.position = new Vector2(rectTransform.position.x, rectTransform.position.y - 35);
+    }
+
     public void SwapBack()
     {
         for (int i = 0; i < optionsParent.transform.childCount; i++)
