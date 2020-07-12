@@ -65,6 +65,7 @@ public class UIHandler : MonoBehaviour
                 ExitSave();
                 progressWindow.transform.parent.gameObject.SetActive(true);
                 progressWindow.GetComponent<ProgressWindow>().StartProgress();
+                Clippy.Instance.Hide();
                 break;
         }
     }
