@@ -29,6 +29,8 @@ public class WordGameHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GlitchEffect.instance.SetGlitch(0.3f);
+
         instance = this;
         StartCoroutine(SpawnLetter());
         foreach(string word in Words)
@@ -38,6 +40,11 @@ public class WordGameHandler : MonoBehaviour
         }
         currentWord = Words[0];
         WordList.transform.GetChild(currentIndex).Find("Icon_current").GetComponent<CanvasGroup>().alpha = 1;
+
+        Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.ChangePos(new Vector3(200, -150, 0));
+        Clippy.Instance.ChangeText("There's no use. Even with this you won't make it!", false);
+        Clippy.Instance.Show(10);
     }
 
    
@@ -88,6 +95,27 @@ public class WordGameHandler : MonoBehaviour
         {
             currentWord = Words[currentIndex];
             WordList.transform.GetChild(currentIndex).Find("Icon_current").GetComponent<CanvasGroup>().alpha = 1;
+
+            if (currentIndex == 1)
+            {
+                Clippy.Instance.ChangeState(Clippy.State.EVIL);
+                Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
+                Clippy.Instance.ChangeText("Oh no Nord VPN has been activated!", false);
+                Clippy.Instance.Show(10);
+
+                GlitchEffect.instance.SetGlitch(1, 1, 0.3f);
+                AudioManager.instance.PlayGlitch();
+            }
+            else if (currentIndex == 2)
+            {
+                Clippy.Instance.ChangeState(Clippy.State.EVIL);
+                Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
+                Clippy.Instance.ChangeText("Crap! The password has been changed... I no longer have the admin access!", false);
+                Clippy.Instance.Show(10);
+
+                GlitchEffect.instance.SetGlitch(1, 1, 0.3f);
+                AudioManager.instance.PlayGlitch();
+            }
         }
         else
         {

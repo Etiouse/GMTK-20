@@ -93,12 +93,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayWordGameAmbiance()
     {
-        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/letters-music"));
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/letters-music"), 0.5f);
     }
     
     public void PlayMazeMusic()
     {
-        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"), 0.5f);
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"), 0.3f);
     }
 
     public void PlayClickSound()

@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System;
 
 public class UIHandler : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private Button minimizeButton = null;
     [SerializeField] private GameObject gameOverWindow = null;
     [SerializeField] private TMP_Text gameOverMessage = null;
+    [SerializeField] private GameObject victoryWindow = null;
     [SerializeField] private GameObject startOptionsWindow = null;
     [SerializeField] private Button saveButton = null;
     [SerializeField] private TMP_InputField jamThemes = null;
@@ -56,46 +59,71 @@ public class UIHandler : MonoBehaviour
     private float timeErased;
     private bool fileErased;
 
+    private bool gameFinished = false;
+
     public void Save()
     {
         saveConfirmationWindow.transform.parent.gameObject.SetActive(true);
+        saveState = SaveState.FIRST_ATTEMPT;
     }
 
     public void ValidateSave()
     {
-        switch (saveState)
+        if (gameFinished)
         {
-            case SaveState.FIRST_ATTEMPT:
-                // First attempt just shift the window upward
-                saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
-                saveState = SaveState.SECOND_ATTEMPT;
+            switch (saveState)
+            {
+                case SaveState.FIRST_ATTEMPT:
+                    saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
 
-                //GlitchEffect.instance.SetGlitch(1, 1);
-                //AudioManager.instance.PlayGlitch();
-                break;
-            case SaveState.SECOND_ATTEMPT:
-                // Second attempt swaps buttons and shift them downward
-                saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
-                saveState = SaveState.THIRD_ATTEMPT;
+                    Clippy.Instance.ChangeState(Clippy.State.NORMAL);
+                    Clippy.Instance.ChangePos(new Vector3(0, 0, 0));
+                    Clippy.Instance.ChangeText("lmao, just kidding. Go for it :)", false);
+                    Clippy.Instance.Show(10);
 
-                //GlitchEffect.instance.SetGlitch(1, 1);
-                //AudioManager.instance.PlayGlitch();
-                break;
-            case SaveState.THIRD_ATTEMPT:
-                // Third attempt shift yes button upward
-                saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
-                saveState = SaveState.END;
+                    saveState = SaveState.SECOND_ATTEMPT;
+                    break;
+                case SaveState.SECOND_ATTEMPT:
+                    Victory();
+                    break;
+            }
+        }
+        else
+        {
+            switch (saveState)
+            {
+                case SaveState.FIRST_ATTEMPT:
+                    // First attempt just shift the window upward
+                    saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
+                    saveState = SaveState.SECOND_ATTEMPT;
 
-                //GlitchEffect.instance.SetGlitch(1, 1);
-                //AudioManager.instance.PlayGlitch();
-                break;
-            case SaveState.END:
-                // Last attempt open progress window
-                ExitSave();
-                progressWindow.transform.parent.gameObject.SetActive(true);
-                progressWindow.GetComponent<ProgressWindow>().StartProgress();
-                Clippy.Instance.Hide();
-                break;
+                    //GlitchEffect.instance.SetGlitch(1, 1);
+                    //AudioManager.instance.PlayGlitch();
+                    break;
+                case SaveState.SECOND_ATTEMPT:
+                    // Second attempt swaps buttons and shift them downward
+                    saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
+                    saveState = SaveState.THIRD_ATTEMPT;
+
+                    //GlitchEffect.instance.SetGlitch(1, 1);
+                    //AudioManager.instance.PlayGlitch();
+                    break;
+                case SaveState.THIRD_ATTEMPT:
+                    // Third attempt shift yes button upward
+                    saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
+                    saveState = SaveState.END;
+
+                    //GlitchEffect.instance.SetGlitch(1, 1);
+                    //AudioManager.instance.PlayGlitch();
+                    break;
+                case SaveState.END:
+                    // Last attempt open progress window
+                    ExitSave();
+                    progressWindow.transform.parent.gameObject.SetActive(true);
+                    progressWindow.GetComponent<ProgressWindow>().StartProgress();
+                    Clippy.Instance.Hide();
+                    break;
+            }
         }
     }
 
@@ -222,6 +250,11 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    public void ExitApp()
+    {
+        Application.Quit();
+    }
+
     public void Minimize()
     {
         minimized = true;
@@ -272,8 +305,6 @@ public class UIHandler : MonoBehaviour
         startOptionsWindow.SetActive(false);
 
         AudioManager.instance.PlayStartSound();
-
-        RunGame();
     }
 
     private void Update()
@@ -362,10 +393,23 @@ public class UIHandler : MonoBehaviour
     {
         gameOverWindow.SetActive(true);
         gameOverMessage.text = message;
+
+        AudioManager.instance.StopAmbiance();
+        AudioManager.instance.PlayGameOverSound();
+    }
+
+    private void Victory()
+    {
+        victoryWindow.SetActive(true);
+
+        AudioManager.instance.PlayVictorySound();
+
+        StartCoroutine(StartVictoryGlitch());
     }
 
     private void ResetGame()
     {
+        AudioManager.instance.PlayIntroAmbiance();
         SceneManager.LoadScene("MainScene");
     }
 
@@ -373,5 +417,75 @@ public class UIHandler : MonoBehaviour
     {
         wordGame.SetActive(false);
         wordGamePanel.SetActive(false);
+
+        AudioManager.instance.PlayIntroAmbiance();
+
+        Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
+        Clippy.Instance.ChangeText("What is this?! An antivirus? AAAAAH IT HURTS!", false);
+        Clippy.Instance.Show(10);
+
+        StartCoroutine(StartWaitForEndBadClippy());
+
+        GlitchEffect.instance.SetGlitch(1, 1, 0.3f);
+        AudioManager.instance.PlayGlitch();
+    }
+
+    private IEnumerator StartVictoryGlitch()
+    {
+        yield return new WaitForSeconds(2);
+
+        GlitchEffect.instance.SetGlitch(1, 1);
+        AudioManager.instance.PlayGlitch();
+    }
+
+    private IEnumerator StartWaitForEndBadClippy()
+    {
+        yield return new WaitForSeconds(10);
+
+        Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
+        Clippy.Instance.ChangePos(new Vector3(-200, -200, 0));
+        Clippy.Instance.ChangeText("Wow... Is it over? ", false);
+        Clippy.Instance.Show(10);
+
+        yield return new WaitForSeconds(10);
+
+        Clippy.Instance.ChangeState(Clippy.State.NORMAL);
+        Clippy.Instance.ChangePos(new Vector3(0, 0, 0));
+        Clippy.Instance.ChangeText("Let me check if I can restore your work...", false);
+        Clippy.Instance.Show(10);
+
+        yield return new WaitForSeconds(10);
+
+        Clippy.Instance.ChangeState(Clippy.State.NORMAL);
+        Clippy.Instance.ChangePos(new Vector3(-200, 200, 0));
+        Clippy.Instance.ChangeText("I think I found it.", false);
+        Clippy.Instance.Show(10);
+
+        yield return new WaitForSeconds(5);
+
+        char[] charArray = savedThemes.ToCharArray();
+        Array.Reverse(charArray);
+        jamThemes.text = new string(charArray);
+
+        yield return new WaitForSeconds(5);
+
+        Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
+        Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
+        Clippy.Instance.ChangeText("Oh... I think that something is wrong. Let me correct that", false);
+        Clippy.Instance.Show(10);
+
+        yield return new WaitForSeconds(10);
+
+        jamThemes.text = savedThemes;
+
+        Clippy.Instance.ChangeState(Clippy.State.NORMAL);
+        Clippy.Instance.ChangePos(new Vector3(0, 0, 0));
+        Clippy.Instance.ChangeText("Yeah! Much better. I think your file can be saved now.", false);
+        Clippy.Instance.Show(10);
+
+        saveButton.gameObject.SetActive(true);
+
+        gameFinished = true;
     }
 }

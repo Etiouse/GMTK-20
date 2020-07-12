@@ -113,15 +113,15 @@ public class GlitchEffect : MonoBehaviour
 		colorIntensity = intensity;
 	}
 
-	public void SetGlitch(float intensity, float seconds)
+	public void SetGlitch(float intensity, float seconds, float afterIntensity = 0)
 	{
-		StartCoroutine(StartGlitch(intensity, seconds));
+		StartCoroutine(StartGlitch(intensity, seconds, afterIntensity));
 	}
 
-	private IEnumerator StartGlitch(float intensity, float seconds)
+	private IEnumerator StartGlitch(float intensity, float seconds, float afterIntensity)
 	{
 		instance.SetGlitch(intensity);
 		yield return new WaitForSeconds(seconds);
-		instance.SetGlitch(0);
+		instance.SetGlitch(afterIntensity);
 	}
 }
