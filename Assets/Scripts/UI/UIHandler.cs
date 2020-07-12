@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
     [Header("Inner Scripts")]
     [SerializeField] private TimeSimulator timeSimulator = null;
+    [SerializeField] private OptionsBar optionsBar = null;
 
     [Header("Objects")]
     [SerializeField] private GameObject wordObject = null;
@@ -13,6 +15,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject gameOverWindow = null;
     [SerializeField] private TMP_Text gameOverMessage = null;
     [SerializeField] private GameObject startOptionsWindow = null;
+    [SerializeField] private Button saveButton = null;
+    [SerializeField] private TMP_InputField jamThemes = null;
 
     [Header("Popups")]
     [SerializeField] private GameObject exitConfirmationWindow = null;
@@ -35,6 +39,17 @@ public class UIHandler : MonoBehaviour
     private RectTransform wordRect;
     private Vector2 wordDim;
     private bool minimized;
+
+    private string savedThemes;
+    private bool eraseThemes;
+    private float delay = 0.1f;
+    private float lastErase;
+
+    private float timeSavedTaken;
+    private bool saveTaken;
+
+    private float timeErased;
+    private bool fileErased;
 
     public void Save()
     {
@@ -109,10 +124,51 @@ public class UIHandler : MonoBehaviour
         GameOver("You closed Wrod without saving your document");
     }
 
+    // Start boss events
     public void EndSavingProcess()
     {
         progressWindow.transform.parent.gameObject.SetActive(false);
         progressConfirmationWindow.transform.parent.gameObject.SetActive(false);
+
+        optionsBar.ShowHomeBar();
+        saveButton.gameObject.SetActive(false);
+
+        Clippy.Instance.ShowSave(true);
+        Clippy.Instance.Show(15);
+        Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
+        Clippy.Instance.ChangeText("Is this what you're looking for ? Too bad, I'm taking it away from you.", false);
+        Clippy.Instance.ChangeState(Clippy.State.EVIL);
+
+        saveTaken = true;
+        timeSavedTaken = Time.time;
+    }
+
+    private void StartErasing()
+    {
+        savedThemes = jamThemes.text;
+        jamThemes.interactable = false;
+        eraseThemes = true;
+
+        Clippy.Instance.ShowSave(false);
+        Clippy.Instance.Show(15);
+        Clippy.Instance.ChangeText("Did you really think you did it ? Let's see if you appreciate all your work getting erased under your nose", false);
+        Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.ChangePos(new Vector3(200, -220, 0));
+    }
+
+    private void StartGame()
+    {
+        Clippy.Instance.Show(0);
+        Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
+        Clippy.Instance.ChangeText("I don't have much time until I lose it again. Quick, press on this !", false);
+        Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
+        Clippy.Instance.ShowDefense(true);
+    }
+
+    public void RunGame()
+    {
+        Clippy.Instance.ShowDefense(false);
+        Clippy.Instance.Hide(); ;
     }
 
     public void Shutdown()
@@ -169,12 +225,12 @@ public class UIHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction += OpenProgressValidationBait;
+        ProgressWindow.OnProgressFinishedAction += OpenProgressValidationBait;
     }
 
     private void OnDisable()
     {
-        progressWindow.GetComponent<ProgressWindow>().OnProgressFinishedAction -= OpenProgressValidationBait;
+        ProgressWindow.OnProgressFinishedAction -= OpenProgressValidationBait;
     }
 
     private void Start()
@@ -192,14 +248,43 @@ public class UIHandler : MonoBehaviour
 
     private void Update()
     {
-        // Shortcuts
-        if (Input.GetKey(KeyCode.LeftControl))
+        // Save taken animation
+        if (saveTaken)
         {
-            // Shortcuts with control key
-            if (Input.GetKey(KeyCode.S))
+            if (Time.time - timeSavedTaken > 15)
             {
-                Save();
+                saveTaken = false;
+                StartErasing();
             }
+        }
+
+        // Erase themes animation
+        if (eraseThemes)
+        {
+            if (Time.time - lastErase > delay)
+            {
+                lastErase = Time.time;
+
+                if (jamThemes.text.Length > 0)
+                {
+                    jamThemes.text = jamThemes.text.Substring(0, jamThemes.text.Length - 2);
+                }
+                else
+                {
+                    eraseThemes = false;
+                    jamThemes.interactable = true;
+
+                    fileErased = true;
+                    timeErased = Time.time;
+                }
+            }
+        }
+
+        // Start game
+        if (fileErased && (Time.time - timeErased > 10))
+        {
+            fileErased = false;
+            StartGame();
         }
 
         // Hide Start menu if clicked outside of the start button
@@ -251,11 +336,6 @@ public class UIHandler : MonoBehaviour
 
     private void ResetGame()
     {
-        gameOverWindow.SetActive(false);
-        minimized = false;
-        minState = MinimizeState.IDLE;
-        timeSimulator.ChangeState(TimeSimulator.State.NORMAL);
-        progressWindow.GetComponent<ProgressWindow>().ResetProgress();
-        progressConfirmationWindow.GetComponent<BaitWindow>().ResetBait();
+        SceneManager.LoadScene("MainScene");
     }
 }

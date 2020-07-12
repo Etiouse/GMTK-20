@@ -9,6 +9,8 @@ TagManager:
   - Path
   - Spawn
   - WallInversor
+  - ButtonAdminConfirm
+  - ButtonProgressDone
   layers:
   - Default
   - TransparentFX

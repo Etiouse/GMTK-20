@@ -12,10 +12,11 @@ public class BaitWindow : MonoBehaviour
         description.text = "GIVE ADMIN RIGHTS TO VIRUS ?!";
         description.color = Color.red;
         button.interactable = false;
-        
-        Clippy.Instance.Show(0);
-        Clippy.Instance.ChangeText(" I took control of your PC and will erase aaaaaall the work you’ve done today Mwahahahahahahahahaha *cough*", false);
+
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.Show(15);
+        Clippy.Instance.ChangeText("I took control of your PC and will erase aaaaaall the work you’ve done today Mwahahahahahahahahaha *cough*", false);
+        Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
     }
 
     public void ResetBait()
