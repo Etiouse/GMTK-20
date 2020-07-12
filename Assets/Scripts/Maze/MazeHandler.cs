@@ -50,6 +50,7 @@ public class MazeHandler : MonoBehaviour
     private List<GameObject> obstacles;
 
     private bool isMazeStarted = false;
+    private bool clippyCalled = false;
 
     public static int CurrentSpawnIndex
     {
@@ -137,11 +138,16 @@ public class MazeHandler : MonoBehaviour
 
             progressDonePart1.SetActive(false);
             progressDonePart2.SetActive(true);
+           
+            if (!clippyCalled)
+            {
+                clippyCalled = true;
 
-            Clippy.Instance.ChangeState(Clippy.State.EVIL);
-            Clippy.Instance.Show(15);
-            Clippy.Instance.ChangeText("It seems to be too easy for you. I’ll increase the difficulty mwahahaha", false);
-            Clippy.Instance.ChangePos(new Vector3(200, -270, 0));
+                Clippy.Instance.ChangeState(Clippy.State.EVIL);
+                Clippy.Instance.Show(15);
+                Clippy.Instance.ChangeText("It seems to be too easy for you. I’ll increase the difficulty mwahahaha", false);
+                Clippy.Instance.ChangePos(new Vector3(200, -270, 0));
+            }
         }
 
         firstPopupProtectionWall.SetActive(activateFirstProtectionWall);
