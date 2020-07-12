@@ -92,6 +92,9 @@ public class UIHandler : MonoBehaviour
                     break;
                 case SaveState.SECOND_ATTEMPT:
                     Victory();
+
+                    ExitSave();
+                    Clippy.Instance.Hide();
                     break;
             }
         }
@@ -112,6 +115,11 @@ public class UIHandler : MonoBehaviour
                     saveState = SaveState.THIRD_ATTEMPT;
 
                     AudioManager.instance.PlayGlitch();
+
+                    Clippy.Instance.ChangeState(Clippy.State.NORMAL);
+                    Clippy.Instance.ChangePos(new Vector3(200, -150, 0));
+                    Clippy.Instance.ChangeText("You know, you have to click on the button, not just randomly on the screen...", false);
+                    Clippy.Instance.Show(10);
                     break;
                 case SaveState.THIRD_ATTEMPT:
                     // Third attempt shift yes button upward
@@ -407,6 +415,10 @@ public class UIHandler : MonoBehaviour
         victoryWindow.SetActive(true);
 
         AudioManager.instance.PlayVictorySound();
+
+        camera.orthographicSize = 210;
+
+        gameObject.SetActive(false);
 
         StartCoroutine(StartVictoryGlitch());
     }

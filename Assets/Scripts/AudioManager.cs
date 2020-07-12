@@ -98,7 +98,7 @@ public class AudioManager : MonoBehaviour
     
     public void PlayMazeMusic()
     {
-        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"), 0.3f);
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"), 0.2f);
     }
 
     public void PlayClickSound()

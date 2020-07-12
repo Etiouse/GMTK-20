@@ -29,7 +29,6 @@ public class ProgressWindow : MonoBehaviour
     {
         accelerateAccepted = true;
         accelerateAcceptedTime = Time.time;
-        GlitchEffect.instance.SetGlitch(1);
     }
 
     public void StartProgress()

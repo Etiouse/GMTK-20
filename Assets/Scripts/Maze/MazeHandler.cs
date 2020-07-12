@@ -147,6 +147,9 @@ public class MazeHandler : MonoBehaviour
                 Clippy.Instance.Show(15);
                 Clippy.Instance.ChangeText("It seems to be too easy for you. I’ll increase the difficulty mwahahaha", false);
                 Clippy.Instance.ChangePos(new Vector3(200, -270, 0));
+
+                GlitchEffect.instance.SetGlitch(1, 3, 0.1f);
+                AudioManager.instance.PlayGlitch();
             }
         }
 
@@ -187,11 +190,13 @@ public class MazeHandler : MonoBehaviour
         Clippy.Instance.Show(15);
         Clippy.Instance.ChangeText("I took the control of your PC Mwahahahaha! If you don’t want your work to be erased, you’ll have to prove your worth by escaping the maze", false);
         Clippy.Instance.ChangePos(new Vector3(200, -270, 0));
+
+        GlitchEffect.instance.SetGlitch(1, 5, 0.1f);
+        AudioManager.instance.PlayGlitch();
     }
 
     private void StartMaze()
     {
-        GlitchEffect.instance.SetGlitch(0.1f);
         currentSpawnIndex = 0;
 
         spawns = new List<GameObject>();
