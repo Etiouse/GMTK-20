@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
@@ -335,11 +336,6 @@ public class UIHandler : MonoBehaviour
 
     private void ResetGame()
     {
-        gameOverWindow.SetActive(false);
-        minimized = false;
-        minState = MinimizeState.IDLE;
-        timeSimulator.ChangeState(TimeSimulator.State.NORMAL);
-        progressWindow.GetComponent<ProgressWindow>().ResetProgress();
-        progressConfirmationWindow.GetComponent<BaitWindow>().ResetBait();
+        SceneManager.LoadScene("MainScene");
     }
 }
