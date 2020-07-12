@@ -5,16 +5,16 @@ using UnityEngine;
 public class MazeHandler : MonoBehaviour
 {
     [SerializeField]
-    private BallMazeManager ball;
+    private BallMazeManager ball = null;
 
     [SerializeField]
-    private GameObject spawnParent;
+    private GameObject spawnParent = null;
 
     [SerializeField]
-    private GameObject obstaclesParent;
+    private GameObject obstaclesParent = null;
 
     [SerializeField]
-    private GameObject firstPopupProtectionWall;
+    private GameObject firstPopupProtectionWall = null;
 
     private static int currentSpawnIndex;
 
