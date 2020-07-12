@@ -16,12 +16,12 @@ public class Clippy : MonoBehaviour
     [SerializeField] private Button rejectButton = null;
     [SerializeField] private GameObject saveImage = null;
     [SerializeField] private GameObject defenseButton = null;
+    [SerializeField] private Transform refTransform = null;
 
     public static Clippy Instance;
 
     public enum State { NORMAL, TROUBLED, BAD, EVIL };
     private State state;
-    private Vector3 pos;
 
     private bool shown;
     private float duration;
@@ -57,7 +57,6 @@ public class Clippy : MonoBehaviour
     public void ChangePos(Vector2 newPos)
     {
         transform.gameObject.GetComponent<RectTransform>().anchoredPosition = newPos;
-        pos = new Vector3(imageTransform.position.x, imageTransform.position.y, imageTransform.position.z);
     }
 
     public void Show(float duration)
@@ -78,7 +77,6 @@ public class Clippy : MonoBehaviour
     {
         state = State.NORMAL;
         Instance = this;
-        pos = new Vector3(imageTransform.position.x, imageTransform.position.y, imageTransform.position.z);
         ShowSave(false);
         ShowDefense(false);
     }
@@ -119,6 +117,7 @@ public class Clippy : MonoBehaviour
 
     private void Animate()
     {
-        imageTransform.position = new Vector3(pos.x, pos.y + Mathf.Sin(Time.time * 2) * 5, pos.z);
+        Vector2 pos = refTransform.gameObject.GetComponent<RectTransform>().anchoredPosition;
+        imageTransform.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(pos.x, pos.y + Mathf.Sin(Time.time * 2) * 5);
     }
 }
