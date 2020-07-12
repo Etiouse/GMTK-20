@@ -2647,7 +2647,8 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1749347221}
   m_Father: {fileID: 1028450129}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3043,7 +3044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0.21176471}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3280,8 +3281,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4015,6 +4016,7 @@ MonoBehaviour:
   message: {fileID: 609502299}
   acceptButton: {fileID: 577416229}
   rejectButton: {fileID: 299602456}
+  saveImage: {fileID: 1749347220}
 --- !u!222 &768548663
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4214,8 +4216,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 190, y: 80}
-  m_SizeDelta: {x: 300, y: 100}
+  m_AnchoredPosition: {x: 240, y: 80}
+  m_SizeDelta: {x: 400, y: 102}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798482137
 MonoBehaviour:
@@ -6079,7 +6081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1069299423
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8457,6 +8459,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447695525}
   m_CullTransparentMesh: 0
+--- !u!114 &1448915204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6048998360701068904, guid: 93d772d5173fa0b4eb663b2c7b01df15,
+    type: 3}
+  m_PrefabInstance: {fileID: 1897939464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1461885587
 GameObject:
   m_ObjectHideFlags: 0
@@ -9874,6 +9888,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747889138}
   m_CullTransparentMesh: 0
+--- !u!1 &1749347220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1749347221}
+  - component: {fileID: 1749347223}
+  - component: {fileID: 1749347222}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1749347221
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749347220}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25569886, w: 0.9667565}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 559636082}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -29.63}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 20, y: -30}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1749347222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749347220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 7c31d32d3b543c442a415f87eaa374c9, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1749347223
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749347220}
+  m_CullTransparentMesh: 0
 --- !u!1 &1766888927
 GameObject:
   m_ObjectHideFlags: 0
@@ -10826,6 +10914,14 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6048998360701068904, guid: 93d772d5173fa0b4eb663b2c7b01df15,
+        type: 3}
+      propertyPath: m_Text
+      value: "- Dragons\n- Speedrun\n- Multiplayer\n- Butterfly effect\n- Turn based
+        \n- Start with nothing\n- Race cars\n- Out of control\n- Kitchen nightmare\n-
+        Single control\n- Monochromatic\n- Weapons galore\n- Only one (Why not, it
+        was cool)\n- Improvised chess\n- Bad is good\n- Back in time\n- Generation"
+      objectReference: {fileID: 0}
     - target: {fileID: 6048998361249149856, guid: 93d772d5173fa0b4eb663b2c7b01df15,
         type: 3}
       propertyPath: m_Name
@@ -10935,6 +11031,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8399499516100381672, guid: 93d772d5173fa0b4eb663b2c7b01df15,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d772d5173fa0b4eb663b2c7b01df15, type: 3}
@@ -11269,11 +11370,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeSimulator: {fileID: 2092241926}
+  optionsBar: {fileID: 1638058359}
   wordObject: {fileID: 118218494}
   minimizeButton: {fileID: 2141770852}
   gameOverWindow: {fileID: 583820562}
   gameOverMessage: {fileID: 113500298}
   startOptionsWindow: {fileID: 389596884}
+  saveButton: {fileID: 597168109}
+  jamThemes: {fileID: 1448915204}
   exitConfirmationWindow: {fileID: 1946452944}
   saveConfirmationWindow: {fileID: 542063447}
   progressWindow: {fileID: 1062907302}

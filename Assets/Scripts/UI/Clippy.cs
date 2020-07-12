@@ -14,6 +14,7 @@ public class Clippy : MonoBehaviour
     [SerializeField] private TMP_Text message = null;
     [SerializeField] private Button acceptButton = null;
     [SerializeField] private Button rejectButton = null;
+    [SerializeField] private GameObject saveImage = null;
 
     public static Clippy Instance;
 
@@ -30,6 +31,11 @@ public class Clippy : MonoBehaviour
         state = newState;
 
         clippy.overrideSprite = GetStateSprite();
+    }
+
+    public void ShowSave(bool show)
+    {
+        saveImage.SetActive(show);
     }
 
     public void ChangeText(string content, bool showButtons)
@@ -67,6 +73,7 @@ public class Clippy : MonoBehaviour
         state = State.NORMAL;
         Instance = this;
         pos = new Vector3(imageTransform.position.x, imageTransform.position.y, imageTransform.position.z);
+        ShowSave(false);
     }
 
     private void Update()
