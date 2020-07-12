@@ -191,6 +191,7 @@ public class MazeHandler : MonoBehaviour
 
     private void StartMaze()
     {
+        GlitchEffect.instance.SetGlitch(0.1f);
         currentSpawnIndex = 0;
 
         spawns = new List<GameObject>();

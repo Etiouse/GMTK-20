@@ -121,6 +121,7 @@ public class WordGameHandler : MonoBehaviour
         {
             UIHandlerObject.SetActive(true);
             OnWinWordGameEvent();
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 

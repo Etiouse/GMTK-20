@@ -65,6 +65,12 @@ public class UIHandler : MonoBehaviour
     {
         saveConfirmationWindow.transform.parent.gameObject.SetActive(true);
         saveState = SaveState.FIRST_ATTEMPT;
+
+        if (gameFinished)
+        {
+            saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
+            saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
+        }
     }
 
     public void ValidateSave()
@@ -74,6 +80,7 @@ public class UIHandler : MonoBehaviour
             switch (saveState)
             {
                 case SaveState.FIRST_ATTEMPT:
+
                     saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
 
                     Clippy.Instance.ChangeState(Clippy.State.NORMAL);
@@ -97,24 +104,21 @@ public class UIHandler : MonoBehaviour
                     saveConfirmationWindow.GetComponent<SaveWindow>().ShiftWindow();
                     saveState = SaveState.SECOND_ATTEMPT;
 
-                    //GlitchEffect.instance.SetGlitch(1, 1);
-                    //AudioManager.instance.PlayGlitch();
+                    AudioManager.instance.PlayGlitch();
                     break;
                 case SaveState.SECOND_ATTEMPT:
                     // Second attempt swaps buttons and shift them downward
                     saveConfirmationWindow.GetComponent<SaveWindow>().SwapButtons();
                     saveState = SaveState.THIRD_ATTEMPT;
 
-                    //GlitchEffect.instance.SetGlitch(1, 1);
-                    //AudioManager.instance.PlayGlitch();
+                    AudioManager.instance.PlayGlitch();
                     break;
                 case SaveState.THIRD_ATTEMPT:
                     // Third attempt shift yes button upward
                     saveConfirmationWindow.GetComponent<SaveWindow>().ShiftYes();
                     saveState = SaveState.END;
 
-                    //GlitchEffect.instance.SetGlitch(1, 1);
-                    //AudioManager.instance.PlayGlitch();
+                    AudioManager.instance.PlayGlitch();
                     break;
                 case SaveState.END:
                     // Last attempt open progress window
@@ -472,7 +476,7 @@ public class UIHandler : MonoBehaviour
 
         Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
         Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
-        Clippy.Instance.ChangeText("Oh... I think that something is wrong. Let me correct that", false);
+        Clippy.Instance.ChangeText("Oh... Something is wrong. Let me correct that", false);
         Clippy.Instance.Show(10);
 
         yield return new WaitForSeconds(10);
