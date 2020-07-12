@@ -13,7 +13,7 @@ public class ProgressWindow : MonoBehaviour
     [SerializeField] private float savingDuration = 90f;
 
     public delegate void ProgressFinishedAction();
-    public event ProgressFinishedAction OnProgressFinishedAction;
+    public static event ProgressFinishedAction OnProgressFinishedAction;
 
     private float timeStarted;
     private bool on;

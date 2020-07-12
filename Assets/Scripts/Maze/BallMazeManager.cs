@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BallMazeManager : MonoBehaviour
 {
+    public delegate void EndMazeEvent();
+    public static event EndMazeEvent OnEndMazeEvent;
+
     [SerializeField]
     private float mouseSpeed = 5f;
 
@@ -43,13 +46,12 @@ public class BallMazeManager : MonoBehaviour
             Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) * mouseSpeed;
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, offset, offset.sqrMagnitude);
-            Debug.DrawRay(transform.position, offset, Color.red, 5);
+            //Debug.DrawRay(transform.position, offset, Color.red, 5);
 
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider.tag == "Wall")
                 {
-                    Debug.Log(hit.collider.name);
                     isBallOutOfPath = true;
                     break;
                 }
@@ -87,7 +89,6 @@ public class BallMazeManager : MonoBehaviour
         if (collision.tag == "Spawn")
         {
             int newSpawnIndex = collision.GetComponent<SpawnStorage>().SpawnIndex;
-            Debug.Log(newSpawnIndex + " " + MazeHandler.CurrentSpawnIndex);
 
             if (newSpawnIndex > MazeHandler.CurrentSpawnIndex)
             {
@@ -95,7 +96,8 @@ public class BallMazeManager : MonoBehaviour
 
                 if (newSpawnIndex >= MazeHandler.GetMaxSpawnNumber() - 1)
                 {
-                    Debug.Log("Win");
+                    OnEndMazeEvent();
+                    Cursor.lockState = CursorLockMode.None;
                 }
                 else
                 {
