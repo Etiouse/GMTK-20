@@ -6063,7 +6063,7 @@ MonoBehaviour:
   exitButton: {fileID: 1821504998}
   percentage: {fileID: 676995989}
   timeLeft: {fileID: 574850747}
-  savingDuration: 120
+  savingDuration: 400
 --- !u!1 &1069299422
 GameObject:
   m_ObjectHideFlags: 0

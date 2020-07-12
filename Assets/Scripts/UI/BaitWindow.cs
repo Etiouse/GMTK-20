@@ -13,7 +13,7 @@ public class BaitWindow : MonoBehaviour
         description.color = Color.red;
         button.interactable = false;
         
-        Clippy.Instance.Show(8);
+        Clippy.Instance.Show(0);
         Clippy.Instance.ChangeText(" I took control of your PC and will erase aaaaaall the work you’ve done today Mwahahahahahahahahaha *cough*", false);
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
     }

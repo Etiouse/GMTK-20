@@ -65,7 +65,7 @@ public class ProgressWindow : MonoBehaviour
             float timePassed = Time.time - timeStarted;
             if (accelerateAccepted)
             {
-                timePassed = (accelerateAcceptedTime - timeStarted) + (Time.time - accelerateAcceptedTime) * 18;
+                timePassed = (accelerateAcceptedTime - timeStarted) + (Time.time - accelerateAcceptedTime) * 50;
             } 
 
             float ratio = timePassed / savingDuration;
@@ -74,26 +74,33 @@ public class ProgressWindow : MonoBehaviour
             if (timePassed > 10 && firstClippy)
             {
                 firstClippy = false;
-                Clippy.Instance.Show(8);
+                Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("It’s taking waaaay too long to save... I can try to speed up the process, do you want some help?", true);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
+                Clippy.Instance.ChangePos(new Vector3(200, -150, 0));
             }
 
-            if (timePassed > 20 && secondClippy && !accelerateAccepted)
+            if (timePassed > 25 && secondClippy && !accelerateAccepted)
             {
                 secondClippy = false;
-                Clippy.Instance.Show(8);
+                Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("Are you sure you don’t want my help? I think it will take ages otherwise.", true);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
+                Clippy.Instance.ChangePos(new Vector3(200, -180, 0));
             }
 
-            if (timePassed > 30 && thirdClippy && !accelerateAccepted)
+            if (timePassed > 40 && thirdClippy && !accelerateAccepted)
             {
                 thirdClippy = false;
-                Clippy.Instance.Show(8);
+                Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("Ok it’s taking too much time,  enough waiting. I’m gonna help you !", false);
                 Clippy.Instance.ChangeState(Clippy.State.BAD);
+                Clippy.Instance.ChangePos(new Vector3(200, -150, 0));
 
+            }
+
+            if (timePassed > 44 && !accelerateAccepted)
+            {
                 Accelerate();
             }
 
@@ -116,7 +123,7 @@ public class ProgressWindow : MonoBehaviour
                 cancelButton.interactable = false;
                 exitButton.interactable = false;
 
-                Clippy.Instance.Show(8);
+                Clippy.Instance.Show(0);
                 Clippy.Instance.ChangeText("Ok, I’ve taken back the control of the PC... What just happened? I think you just have to follow the path and click on the confirm button to complete the save.", false);
                 Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
                 Clippy.Instance.ChangePos(new Vector3(200, -230, 0));
