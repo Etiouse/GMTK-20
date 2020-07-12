@@ -33,7 +33,6 @@ public class WordGameHandler : MonoBehaviour
         }
         currentWord = Words[0];
         WordList.transform.GetChild(currentIndex).Find("Icon_current").GetComponent<CanvasGroup>().alpha = 1;
-        AudioManager.instance.PlayAmbiance(Resources.Load<AudioClip>("Ambiance/letters-music"));
     }
 
    
@@ -55,7 +54,14 @@ public class WordGameHandler : MonoBehaviour
         
         currentText += letter;
         if (!currentWord.ToLower().StartsWith(currentText.ToLower()))
+        {
             currentText = "";
+            AudioManager.instance.PlayPickupLetter(false);
+        }
+        else
+        {
+            AudioManager.instance.PlayPickupLetter(true);
+        }
         CurrentText.text = currentText;
 
         if (currentText.ToLower() == currentWord.ToLower())

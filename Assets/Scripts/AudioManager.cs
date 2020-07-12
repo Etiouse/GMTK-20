@@ -75,6 +75,84 @@ public class AudioManager : MonoBehaviour
             ambiance.Stop();
         }
     }
+
+    public void PlayWordGameAmbiance()
+    {
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/letters-music"));
+    }
+    
+    public void PlayMazeMusic()
+    {
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/maze-music"));
+    }
+
+    public void PlayClickSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/mouse-click/click" + Random.Range(1, 3));
+        PlaySFX(clip);
+    }
+
+    /// <summary>
+    /// Play Clippy voice
+    /// </summary>
+    /// <param name="isEvil"></param>
+    /// <param name="length">0 = short, 1 = medium, 2 = long</param>
+    public void PlayClippyVoice(bool isEvil, int lengthType = 0)
+    {
+        string length = "medium";
+        string evil = isEvil ? "evil" : "normal";
+        switch(lengthType)
+        {
+            case 0:
+                length = "short";
+                break;
+            case 1:
+                length = "medium";
+                break;
+            case 2:
+                length = "long";
+                break;
+        }
+
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/clippy/" + evil + "_" + length);
+        PlaySFX(clip);
+    }
+
+    public void PlayPickupLetter(bool goodLetter)
+    {
+        string path = goodLetter ? "good" : "bad";
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/word-game/" + path);
+        PlaySFX(clip);
+    }
+
+    public void PlayCollisionSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/maze/collision");
+        PlaySFX(clip);
+    }
+
+    public void PlayIntroAmbiance()
+    {
+        PlayAmbiance(Resources.Load<AudioClip>("Ambiance/intro"));
+    }
+
+    public void PlayStartSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/start/startup");
+        PlaySFX(clip);
+    }
+
+    public void PlayGameOverSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/end/gameover");
+        PlaySFX(clip);
+    }
+
+    public void PlayVictorySound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/end/victory");
+        PlaySFX(clip);
+    }
 }
 
 
