@@ -16,6 +16,8 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class GlitchEffect : MonoBehaviour
 {
+    public static GlitchEffect instance;
+
 	public Texture2D displacementMap;
 	public Shader Shader;
 	[Header("Glitch Intensity")]
@@ -39,6 +41,7 @@ public class GlitchEffect : MonoBehaviour
 
 	void Start()
 	{
+        instance = this;
 		_material = new Material(Shader);
 	}
 
@@ -101,4 +104,11 @@ public class GlitchEffect : MonoBehaviour
 
 		Graphics.Blit(source, destination, _material);
 	}
+
+    public void SetGlitch(float intensity)
+    {
+        this.intensity = intensity;
+        flipIntensity = intensity;
+        colorIntensity = intensity;
+    }
 }
