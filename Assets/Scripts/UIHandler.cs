@@ -253,5 +253,8 @@ public class UIHandler : MonoBehaviour
         gameOverWindow.SetActive(false);
         minimized = false;
         minState = MinimizeState.IDLE;
+        timeSimulator.ChangeState(TimeSimulator.State.NORMAL);
+        progressWindow.GetComponent<ProgressWindow>().ResetProgress();
+        progressConfirmationWindow.GetComponent<BaitWindow>().ResetBait();
     }
 }

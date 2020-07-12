@@ -33,6 +33,7 @@ public class ProgressWindow : MonoBehaviour
     {
         on = false;
         slider.value = 0;
+        finishButton.gameObject.SetActive(false);
     }
 
     private void Start()

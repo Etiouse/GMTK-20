@@ -9,8 +9,15 @@ public class BaitWindow : MonoBehaviour
 
     public void Corrupt()
     {
-        description.text = "GIVE ADMIN RIGHTS TO VIRUS";
+        description.text = "GIVE ADMIN RIGHTS TO VIRUS ?!";
         description.color = Color.red;
         button.interactable = false;
+    }
+
+    public void ResetBait()
+    {
+        description.text = "VALIDATE SAVE PROCESS ?!";
+        description.color = Color.black;
+        button.interactable = true;
     }
 }
