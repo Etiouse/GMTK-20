@@ -201,7 +201,7 @@ public class UIHandler : MonoBehaviour
 
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
         Clippy.Instance.ChangePos(new Vector3(-200, -200, 0));
-        Clippy.Instance.ChangeText("Impressive, you reached the end of the maze. Sadly for you, you won't be able to save your work. But you can try.", false);
+        Clippy.Instance.ChangeText("Impressive, you've reached the end of the maze. Sadly for you, you won't be able to save your work. But you can try.", false);
         Clippy.Instance.Show(10);
 
         timeSimulator.ChangeState(TimeSimulator.State.CORRUPTED);

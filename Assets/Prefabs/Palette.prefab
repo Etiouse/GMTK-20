@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1038331d8b4ff884bae50ca2a8ca5b70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 1
+  MoveSpeed: 0.5
 --- !u!61 &5119700501960811125
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 6
+  m_Constraints: 7
 --- !u!1 &5119700503244632331
 GameObject:
   m_ObjectHideFlags: 0

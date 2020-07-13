@@ -30,7 +30,7 @@ public class Palette : MonoBehaviour
 
         if (cursorLocked)
         {
-            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), 0, 0);
+            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), 0, 0) * MoveSpeed * Time.deltaTime;
             bool movementOk = true;
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, offset, offset.magnitude);
@@ -45,7 +45,7 @@ public class Palette : MonoBehaviour
             
             if (movementOk)
             {
-                transform.Translate(offset * MoveSpeed);
+                transform.Translate(offset);
             }
             
         }
