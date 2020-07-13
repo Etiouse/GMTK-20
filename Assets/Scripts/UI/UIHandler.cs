@@ -243,7 +243,7 @@ public class UIHandler : MonoBehaviour
         Clippy.Instance.Show(0);
         Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
         Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
-        Clippy.Instance.ChangeText("I don't have much time until I lose it again. Quick, press on this !", false);
+        Clippy.Instance.ChangeText("I don't have much time until I lose it again. Quick, press this!", false);
         Clippy.Instance.ShowDefense(true);
     }
 
