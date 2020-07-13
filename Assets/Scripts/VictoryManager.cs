@@ -21,11 +21,9 @@ public class VictoryManager : MonoBehaviour
 
     private IEnumerator StartVictoryGlitch()
     {
-        print("OK");
         GlitchEffect.instance.SetGlitch(0);
 
         yield return new WaitForSeconds(5);
-        print("OK2");
 
         GlitchEffect.instance.SetGlitch(1, 1);
         AudioManager.instance.PlayGlitch();
