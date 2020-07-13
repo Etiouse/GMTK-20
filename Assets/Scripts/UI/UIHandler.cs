@@ -7,6 +7,9 @@ using System;
 
 public class UIHandler : MonoBehaviour
 {
+    public delegate void StartsdfEvent();
+    public static event StartsdfEvent OnStartsdfEvent;
+
     [Header("Inner Scripts")]
     [SerializeField] private TimeSimulator timeSimulator = null;
     [SerializeField] private OptionsBar optionsBar = null;
@@ -61,6 +64,8 @@ public class UIHandler : MonoBehaviour
 
     private bool firstGameFinished;
     private bool gameFinished;
+
+    private bool firstTimeFileOpenAfterMaze;
 
     public void Save()
     {
@@ -193,12 +198,22 @@ public class UIHandler : MonoBehaviour
         saveButton.gameObject.SetActive(false);
 
         firstGameFinished = true;
+
+        Clippy.Instance.ChangeState(Clippy.State.EVIL);
+        Clippy.Instance.ChangePos(new Vector3(-200, -200, 0));
+        Clippy.Instance.ChangeText("Impressive, you reached the end of the maze. Sadly for you, you won't be able to save your work. But you can try.", false);
+        Clippy.Instance.Show(10);
+
+        timeSimulator.ChangeState(TimeSimulator.State.CORRUPTED);
     }
 
-    private void StartStolenEvent()
+    public void StartStolenEvent()
     {
-        if (firstGameFinished)
+        if (firstGameFinished &&
+            !firstTimeFileOpenAfterMaze)
         {
+            firstTimeFileOpenAfterMaze = true;
+
             Clippy.Instance.ShowSave(true);
             Clippy.Instance.Show(15);
             Clippy.Instance.ChangePos(new Vector3(0, -220, 0));
@@ -242,9 +257,7 @@ public class UIHandler : MonoBehaviour
 
         AudioManager.instance.PlayWordGameAmbiance();
 
-        print(camera.backgroundColor);
         camera.backgroundColor = Color.black;
-        print(camera.backgroundColor);
         gameObject.SetActive(false);
     }
 
@@ -431,9 +444,9 @@ public class UIHandler : MonoBehaviour
 
         camera.orthographicSize = 210;
 
-        gameObject.SetActive(false);
+        OnStartsdfEvent();
 
-        StartCoroutine(StartVictoryGlitch());
+        gameObject.SetActive(false);
     }
 
     private void ResetGame()
@@ -447,8 +460,6 @@ public class UIHandler : MonoBehaviour
         wordGame.SetActive(false);
         wordGamePanel.SetActive(false);
 
-        AudioManager.instance.PlayIntroAmbiance();
-
         Clippy.Instance.ChangeState(Clippy.State.EVIL);
         Clippy.Instance.ChangePos(new Vector3(200, -200, 0));
         Clippy.Instance.ChangeText("What is this?! An antivirus? AAAAAH IT HURTS!", false);
@@ -460,17 +471,14 @@ public class UIHandler : MonoBehaviour
         AudioManager.instance.PlayGlitch();
     }
 
-    private IEnumerator StartVictoryGlitch()
-    {
-        yield return new WaitForSeconds(2);
-
-        GlitchEffect.instance.SetGlitch(1, 1);
-        AudioManager.instance.PlayGlitch();
-    }
-
     private IEnumerator StartWaitForEndBadClippy()
     {
+        timeSimulator.ChangeState(TimeSimulator.State.TROUBLED);
+
         yield return new WaitForSeconds(10);
+
+        AudioManager.instance.PlayIntroAmbiance();
+        timeSimulator.ChangeState(TimeSimulator.State.NORMAL);
 
         Clippy.Instance.ChangeState(Clippy.State.TROUBLED);
         Clippy.Instance.ChangePos(new Vector3(-200, -200, 0));

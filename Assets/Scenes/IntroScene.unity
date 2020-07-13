@@ -322,7 +322,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "You are Mark Brown and you are organising the GMTK Game Jam 2020.\r"
+  m_text: "You are Mark <color=#9C4B00><b>Brown</b></color> and you are organising
+    the GMTK Game <color=#ff00bb><b>Jam</b></color> 2020.\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d544bd8ea217f76499b16eb55fa075e7, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: d544bd8ea217f76499b16eb55fa075e7, type: 2}
@@ -893,11 +894,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You''ve written a lot of theme ideas for the Game Jam.
+  m_text: 'You''ve written a lot of theme ideas for the Game <color=#ff00bb><b>Jam</b></color>.
 
 
-    Now you are
-    a bit tired and you want to go to bed, you''ll choose the theme tomorrow.'
+    Now
+    you are a bit tired and you want to go to bed, you''ll choose the theme tomorrow.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d544bd8ea217f76499b16eb55fa075e7, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: d544bd8ea217f76499b16eb55fa075e7, type: 2}
