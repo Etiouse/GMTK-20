@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Palette : MonoBehaviour
 {
-
-    public float MoveSpeed = 1f;
     private bool cursorLocked;
 
     // Start is called before the first frame update
@@ -28,9 +26,10 @@ public class Palette : MonoBehaviour
             cursorLocked = true;
         }
 
-        if (cursorLocked)
+        if (cursorLocked &&
+            !Parameters.IsOpened)
         {
-            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), 0, 0) * MoveSpeed;
+            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), 0, 0) * Parameters.MouseSensitivity;
             bool movementOk = true;
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, offset, offset.magnitude);
@@ -47,8 +46,6 @@ public class Palette : MonoBehaviour
             {
                 transform.Translate(offset);
             }
-            
         }
-
     }
 }

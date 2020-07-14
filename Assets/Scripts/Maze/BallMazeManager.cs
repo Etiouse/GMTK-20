@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BallMazeManager : MonoBehaviour
 {
-    [SerializeField]
-    private float mouseSpeed = 5f;
-
     private bool cursorLocked;
 
     private bool isBallOutOfPath;
@@ -39,9 +37,12 @@ public class BallMazeManager : MonoBehaviour
             cursorLocked = true;
         }
 
-        if (cursorLocked)
+        if (cursorLocked &&
+            !Parameters.IsOpened)
         {
-            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) * mouseSpeed;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Vector3 offset = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) * Parameters.MouseSensitivity;
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, offset, offset.sqrMagnitude);
             //Debug.DrawRay(transform.position, offset, Color.red, 5);
@@ -57,7 +58,7 @@ public class BallMazeManager : MonoBehaviour
 
             if (!isBallOutOfPath)
             {
-                MoveBall(offset * mouseSpeed);
+                MoveBall(offset * Parameters.MouseSensitivity);
             }
         }
     }
