@@ -27,7 +27,9 @@ public class Parameters : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) ||
+            Input.GetKeyDown(KeyCode.P) ||
+            Input.GetKeyDown(KeyCode.S))
         {
             OpenCloseParameters(!IsOpened);
         }
