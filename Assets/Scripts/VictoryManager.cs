@@ -23,9 +23,14 @@ public class VictoryManager : MonoBehaviour
     {
         GlitchEffect.instance.SetGlitch(0);
 
+        yield return new WaitForSeconds(2);
+
+        GlitchEffect.instance.SetGlitch(1, 2);
+        AudioManager.instance.PlayGlitch();
+
         yield return new WaitForSeconds(5);
 
-        GlitchEffect.instance.SetGlitch(1, 1);
+        GlitchEffect.instance.SetGlitch(1, 2);
         AudioManager.instance.PlayGlitch();
     }
 }
